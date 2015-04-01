@@ -4,7 +4,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        int x = 256;
+        /*int x = 256;
         int y = 3180;
         int z = x + y;
 
@@ -39,6 +39,19 @@ public class Main {
 
         for (int i=0; i<j2.length; i++) {
             System.out.print(j2[i] + " - " + j3[i] + ", ");
+        }*/
+
+        //int a = 10;
+        int a = 20;
+
+        if (a < 15){
+
+            System.out.println("Condition executed");
+        }
+
+        else {
+
+            System.out.println("Condition not executed");
         }
     }
 }

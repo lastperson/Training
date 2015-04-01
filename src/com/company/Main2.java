@@ -1,5 +1,7 @@
 package com.company;
 
+import org.openqa.selenium.chrome.ChromeDriver;
+
 /**
  * Created by Admin on 25.03.15.
  */
@@ -45,6 +47,5 @@ public class Main2 {
             }
         }
     }
-
 
 }

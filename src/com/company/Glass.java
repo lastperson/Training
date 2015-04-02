@@ -35,7 +35,7 @@ public class Glass {
 
     public int percentFilled (){
 
-        return this.Filled;
+        return Filled;
 
     }
 

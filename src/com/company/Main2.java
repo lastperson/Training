@@ -1,5 +1,7 @@
 package com.company;
 
+import com.sun.javafx.runtime.SystemProperties;
+
 /**
  * Created by Admin on 25.03.15.
  */
@@ -44,7 +46,7 @@ public class Main2 {
                 break;
             }
         }
-    }
 
+    }
 
 }

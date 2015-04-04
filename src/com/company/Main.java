@@ -40,5 +40,6 @@ public class Main {
         for (int i=0; i<j2.length; i++) {
             System.out.print(j2[i] + " - " + j3[i] + ", ");
         }
+
     }
 }

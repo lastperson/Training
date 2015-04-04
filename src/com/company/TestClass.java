@@ -5,7 +5,8 @@ package com.company;
  */
 public class TestClass {
 
-    public String s= "Hello, World";
+    public String s = "Hello, World";
+
     public void say() {
     System.out.println(s);
     }

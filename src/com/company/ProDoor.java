@@ -5,7 +5,7 @@ package com.company;
  */
 public class ProDoor {
 
-    public int hight;
+    public int height;
     public int width;
     public boolean isOpened;
     public boolean isLocked;
@@ -13,7 +13,7 @@ public class ProDoor {
 
     public ProDoor (int h, int w, boolean isOpened, boolean isLocked){
 
-        hight = h;
+        height = h;
         width = w;
         this.isOpened = isOpened;
         this.isLocked = isLocked;
@@ -22,11 +22,11 @@ public class ProDoor {
 
     public String toString(){
 
-        /*System.out.println("Size:"+ hight + "x" + width);
+/*      System.out.println("Size:"+ hight + "x" + width);
         System.out.println("Opened: "+ isOpened);
         System.out.println("Locked: "+ isLocked);
 */
-        String stats = "Size:"+ hight + "x" + width + "\n" + "Opened: "+ isOpened + "\n" + "Locked: "+ isLocked;
+        String stats = "Size:"+ height + "x" + width + "\n" + "Opened: "+ isOpened + "\n" + "Locked: "+ isLocked;
         return stats;
 
     }
@@ -58,7 +58,7 @@ public class ProDoor {
     public void unlock(){
 
         System.out.println("Unlocking...");
-        this.isLocked = false;
+        isLocked = false;
         System.out.println("Door is unlocked!");
     }
 

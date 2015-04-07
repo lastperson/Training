@@ -41,18 +41,19 @@ public class Lists_Homework {
 
     public static boolean isEqual(String[]a, List<String> s){
 
+        boolean result = false;
         if (a.length == s.size()) {
 
             for (int i = 0; i < a.length; i++) {
 
                 if (a[i] == s.get(i)){
                     System.out.println(a[i] + " = " + s.get(i));
-
-                }
-            } return true;
+                    result = true;
+                    } else result = false;
+            }
         }
 
-        return false;
+        return result;
     }
 
     public static void main(String[] args)  {

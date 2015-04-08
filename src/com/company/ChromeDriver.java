@@ -1,5 +1,7 @@
 package com.company;
 
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -12,6 +14,9 @@ import java.util.List;
 /**
  * Created by Dimonaz on 31.03.2015.
  */
+
+@RunWith(JUnit4.class)
+
 public class ChromeDriver {
 
     public static String generatePassword (WebDriver driver, String master, String site){

@@ -20,7 +20,6 @@ public class Homework_6 {
     public static WebElement siteField;
     public static WebElement passwordField;
     public static WebElement buttonGenerate;
-    public static WebDriverWait wait = new WebDriverWait(driver, 30);
 
     public static void setMaster(String master) {
 

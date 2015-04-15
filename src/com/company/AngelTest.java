@@ -40,7 +40,7 @@ public class AngelTest {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
         //driver.get("http://angel.net/~nic/passwd.current.html");
-        driver.get("http://oxogamestudio.com/passwd.current7.htm");
+        driver.get("http://oxogamestudio.com/passwd.current8.htm");
         List<WebElement> input = driver.findElements(By.tagName("input"));
         Homework_6.buttonGenerate = buttonGenerate = input.get(2);
         Homework_6.masterField = driver.findElement(By.name("master"));

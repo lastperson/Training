@@ -7,12 +7,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,10 +21,8 @@ import java.util.List;
 public class AngelTest {
 
     public WebDriver driver;
-    WebElement masterField;
-    WebElement siteField;
-    WebElement passwordField;
     WebElement buttonGenerate;
+    List<WebElement> td;
 
     @After
 
@@ -44,32 +39,28 @@ public class AngelTest {
         System.setProperty("webdriver.chrome.driver", "C:/chromedriver.exe");
         driver = new ChromeDriver();
         driver.manage().window().maximize();
-        driver.get("http://angel.net/~nic/passwd.current.html");
-        masterField = driver.findElement(By.name("master"));
-        masterField.clear();
-        siteField = driver.findElement(By.name("site"));
-        siteField.clear();
-        passwordField = driver.findElement(By.name("password"));
+        //driver.get("http://angel.net/~nic/passwd.current.html");
+        driver.get("http://oxogamestudio.com/passwd.current7.htm");
         List<WebElement> input = driver.findElements(By.tagName("input"));
-        buttonGenerate = input.get(2);
-    }
-
-    public String generatePassword(String master, String site) {
-
-        WebElement masterField = driver.findElement(By.name("master"));
-        masterField.clear();
-        masterField.sendKeys(master);
-        WebElement siteField = driver.findElement(By.name("site"));
-        siteField.clear();
-        siteField.sendKeys(site);
-        buttonGenerate.click();
-        WebElement passwordField = driver.findElement(By.name("password"));
-        String password = passwordField.getAttribute("value");
-        return password;
+        Homework_6.buttonGenerate = buttonGenerate = input.get(2);
+        Homework_6.masterField = driver.findElement(By.name("master"));
+        Homework_6.siteField = driver.findElement(By.name("site"));
+        Homework_6.passwordField = driver.findElement(By.name("password"));
+        td = driver.findElements(By.tagName("td"));
 
     }
 
-    public boolean compare(String a, String b, String example) {
+    public String generatePassword(String master, String site) throws InterruptedException {
+
+        Homework_6.setMaster(master);
+        Homework_6.setSite(site);
+        Homework_6.generate();
+
+        return Homework_6.getPassword();
+
+    }
+
+    public boolean compare(String a, String b, String example) throws Exception{
 
         String generated = generatePassword(a, b);
         if (generated.equals(example)) {
@@ -77,17 +68,53 @@ public class AngelTest {
         } else return false;
     }
 
-    @Test
+    public boolean verifyNotCleared(){
 
-    public void Test1() {
+        if(!Homework_6.getMaster().equals("") && !Homework_6.getSite().equals(""))
+        return true;
+        else return false;
+    }
 
-        Assert.assertTrue("Password did not match.", compare("12345678", "gmail.com", "W3Hdka0clbEI+@1a"));
+    public boolean verifyFieldsEnabled(){
 
+        if (Homework_6.masterField.isEnabled() && Homework_6.siteField.isEnabled() && Homework_6.passwordField.isEnabled()) return true;
+        else return false;
+    }
+
+    public String getMasterLabel(){
+
+    String s = td.get(0).getText();
+    return s;
+
+    }
+
+    public String getSiteLabel(){
+
+        String s = td.get(2).getText();
+        return s;
+    }
+
+    public String getPasswordLabel(){
+
+        String s = td.get(5).getText();
+        return s;
     }
 
     @Test
 
-    public void Test2() {
+    public void Test1() throws Exception {
+
+        Assert.assertTrue("Password did not match.", compare("12345678", "gmail.com", "W3Hdka0clbEI+@1a"));
+        Assert.assertTrue(verifyNotCleared());
+        Assert.assertTrue(verifyFieldsEnabled());
+        Assert.assertEquals(getMasterLabel(), "Your master password");
+        Assert.assertEquals(getSiteLabel(), "Site name");
+        Assert.assertEquals(getPasswordLabel(), "Generated password");
+    }
+
+    @Test
+
+    public void Test2() throws Exception{
 
         Assert.assertTrue("Password did not match.", compare("", "gmail.com", "zmcHOAyf2oZm+@1a"));
 
@@ -96,7 +123,7 @@ public class AngelTest {
 
     @Test
 
-    public void Test3() {
+    public void Test3() throws Exception{
 
         Assert.assertTrue("Password did not match.", compare("12345678", "", "9Ixm2r5Xnm41Q@1a"));
 
@@ -105,9 +132,9 @@ public class AngelTest {
 
     @Test
 
-    public void Test4(){
+    public void Test4()throws Exception{
 
-        buttonGenerate.click();
+        Homework_6.generate();
         Assert.assertTrue("Password did not match.", compare("", "", "BaefBs8/Z/cm2@1a"));
 
     }
@@ -115,15 +142,18 @@ public class AngelTest {
 
     @Test
 
-    public void Test5(){
+    public void Test5()throws Exception {
+
+        String s = "";
 
         for (int i = 0; i < 200; i++) {
-           masterField.sendKeys("1");
-           siteField.sendKeys("1");
+           s += 1;
            }
 
-        siteField.sendKeys(Keys.ENTER);
-        String password = passwordField.getAttribute("value");
+        Homework_6.setMaster(s);
+        Homework_6.setSite(s);
+        Homework_6.generate();
+        String password = Homework_6.getPassword();
         Assert.assertEquals("Password did not match!", password, "aR8ztwNBbSqe5@1a");
 
     }
@@ -131,12 +161,12 @@ public class AngelTest {
 
     @Test
 
-    public void Test6(){
+    public void Test6()throws Exception {
 
-        masterField.sendKeys("/';*&#&$@^!_...\\n");
-        siteField.sendKeys("/';*&#&$@^!_...\\n");
-        siteField.sendKeys(Keys.ENTER);
-        String password = passwordField.getAttribute("value");
+        Homework_6.setMaster("/';*&#&$@^!_...\\n");
+        Homework_6.setSite("/';*&#&$@^!_...\\n");
+        Homework_6.generate();
+        String password = Homework_6.getPassword();
         Assert.assertEquals("Password did not match!", password, "ctolW6AdI0te1@1a");
 
     }

@@ -61,24 +61,12 @@ public class AngelTest {
         else return false;
     }
 
-    public String getMasterLabel(){
+    public String getLabel(String labelName){
 
-    String s = driver.findElement(By.xpath("//td[text()='Your master password']")).getText();
+    String s = driver.findElement(By.xpath("//td[text()='" + labelName + "']")).getText();
 
     return s;
 
-    }
-
-    public String getSiteLabel(){
-
-        String s = driver.findElement(By.xpath("//td[text()='Site name']")).getText();
-        return s;
-    }
-
-    public String getPasswordLabel(){
-
-        String s = driver.findElement(By.xpath("//td[text()='Generated password']")).getText();
-        return s;
     }
 
     public void passwordIsCorrect (String masterPassword, String siteName, String generatedPassword) throws InterruptedException {
@@ -113,9 +101,9 @@ public class AngelTest {
         passwordIsCorrect("12345678", "gmail.com", "W3Hdka0clbEI+@1a");
         Assert.assertTrue(verifyNotCleared());
         Assert.assertTrue(verifyFieldsEnabled());
-        Assert.assertEquals(getMasterLabel(), "Your master password");
-        Assert.assertEquals(getSiteLabel(), "Site name");
-        Assert.assertEquals(getPasswordLabel(), "Generated password");
+        Assert.assertEquals(getLabel("Your master password"), "Your master password");
+        Assert.assertEquals(getLabel("Site name"), "Site name");
+        Assert.assertEquals(getLabel("Generated password"), "Generated password");
     }
 
     @Test
@@ -124,9 +112,9 @@ public class AngelTest {
 
         passwordIsCorrect("", "gmail.com", "zmcHOAyf2oZm+@1a");
         Assert.assertTrue(verifyFieldsEnabled());
-        Assert.assertEquals(getMasterLabel(), "Your master password");
-        Assert.assertEquals(getSiteLabel(), "Site name");
-        Assert.assertEquals(getPasswordLabel(), "Generated password");
+        Assert.assertEquals(getLabel("Your master password"), "Your master password");
+        Assert.assertEquals(getLabel("Site name"), "Site name");
+        Assert.assertEquals(getLabel("Generated password"), "Generated password");
 
     }
 
@@ -137,9 +125,9 @@ public class AngelTest {
 
         passwordIsCorrect("12345678", "", "9Ixm2r5Xnm41Q@1a");
         Assert.assertTrue(verifyFieldsEnabled());
-        Assert.assertEquals(getMasterLabel(), "Your master password");
-        Assert.assertEquals(getSiteLabel(), "Site name");
-        Assert.assertEquals(getPasswordLabel(), "Generated password");
+        Assert.assertEquals(getLabel("Your master password"), "Your master password");
+        Assert.assertEquals(getLabel("Site name"), "Site name");
+        Assert.assertEquals(getLabel("Generated password"), "Generated password");
 
     }
 
@@ -151,9 +139,9 @@ public class AngelTest {
         Homework_6.generate();
         passwordIsCorrect("", "", "BaefBs8/Z/cm2@1a");
         Assert.assertTrue(verifyFieldsEnabled());
-        Assert.assertEquals(getMasterLabel(), "Your master password");
-        Assert.assertEquals(getSiteLabel(), "Site name");
-        Assert.assertEquals(getPasswordLabel(), "Generated password");
+        Assert.assertEquals(getLabel("Your master password"), "Your master password");
+        Assert.assertEquals(getLabel("Site name"), "Site name");
+        Assert.assertEquals(getLabel("Generated password"), "Generated password");
 
     }
 
@@ -175,9 +163,9 @@ public class AngelTest {
         Assert.assertEquals("Password did not match!", password, "aR8ztwNBbSqe5@1a");
         Assert.assertTrue(verifyNotCleared());
         Assert.assertTrue(verifyFieldsEnabled());
-        Assert.assertEquals(getMasterLabel(), "Your master password");
-        Assert.assertEquals(getSiteLabel(), "Site name");
-        Assert.assertEquals(getPasswordLabel(), "Generated password");
+        Assert.assertEquals(getLabel("Your master password"), "Your master password");
+        Assert.assertEquals(getLabel("Site name"), "Site name");
+        Assert.assertEquals(getLabel("Generated password"), "Generated password");
 
     }
 
@@ -193,9 +181,9 @@ public class AngelTest {
         Assert.assertEquals("Password did not match!", password, "ctolW6AdI0te1@1a");
         Assert.assertTrue(verifyNotCleared());
         Assert.assertTrue(verifyFieldsEnabled());
-        Assert.assertEquals(getMasterLabel(), "Your master password");
-        Assert.assertEquals(getSiteLabel(), "Site name");
-        Assert.assertEquals(getPasswordLabel(), "Generated password");
+        Assert.assertEquals(getLabel("Your master password"), "Your master password");
+        Assert.assertEquals(getLabel("Site name"), "Site name");
+        Assert.assertEquals(getLabel("Generated password"), "Generated password");
 
     }
 
@@ -207,9 +195,9 @@ public class AngelTest {
         String buttonLabel = Homework_6.buttonGenerate.getAttribute("value");
         Assert.assertEquals("Label did not match!", buttonLabel, "Generate");
         Assert.assertTrue(verifyFieldsEnabled());
-        Assert.assertEquals(getMasterLabel(), "Your master password");
-        Assert.assertEquals(getSiteLabel(), "Site name");
-        Assert.assertEquals(getPasswordLabel(), "Generated password");
+        Assert.assertEquals(getLabel("Your master password"), "Your master password");
+        Assert.assertEquals(getLabel("Site name"), "Site name");
+        Assert.assertEquals(getLabel("Generated password"), "Generated password");
 
     }
 

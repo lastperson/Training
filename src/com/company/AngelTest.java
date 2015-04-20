@@ -11,6 +11,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+
 /**
  * Created by Admin on 08.04.15.
  */
@@ -20,7 +21,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 public class AngelTest {
 
     public WebDriver driver;
-    WebElement buttonGenerate;
 
     @After
 
@@ -38,7 +38,7 @@ public class AngelTest {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
         //driver.get("http://angel.net/~nic/passwd.current.html");
-        driver.get("http://oxogamestudio.com/passwd.current7.htm");
+        driver.get("http://oxogamestudio.com/passwd.current8.htm");
         while (driver.findElements(By.xpath("//input[@value='Generate']")).size() <= 0){
             Thread.sleep(100);
         }
@@ -46,26 +46,7 @@ public class AngelTest {
         Homework_6.masterField = driver.findElement(By.xpath("//input[@type='password']"));
         Homework_6.siteField = driver.findElement(By.xpath("(//tr/td/input)[2]"));
         Homework_6.passwordField = driver.findElement(By.xpath("(//tr/td/input)[4]"));
-
-    }
-
-    public String generatePassword(String master, String site) throws InterruptedException {
-
-        Homework_6.setMaster(master);
-        Homework_6.setSite(site);
-        Homework_6.generate();
-
-        return Homework_6.getPassword();
-
-    }
-
-    public boolean compare(String a, String b, String example) throws Exception{
-
-        String generated = generatePassword(a, b);
-        if (generated.equals(example)) {
-            return true;
-        } else return false;
-    }
+        }
 
     public boolean verifyNotCleared(){
 
@@ -100,33 +81,36 @@ public class AngelTest {
         return s;
     }
 
-    public void titleIsCorrect (){
+    public void passwordIsCorrect (String masterPassword, String siteName, String generatedPassword) throws InterruptedException {
 
-        setField("Your master password", "12345678");
-        setField("Site name","gmail.com");
-        generate();
+        setField("Your master password", masterPassword);
+        setField("Site name",siteName);
+        Homework_6.generate();
         String pwd = getField("Generated password");
-        Assert.assertEquals("W3Hdka0clbEI+@1a", pwd);
+        Assert.assertEquals("Password did not match.", generatedPassword, pwd);
 
     }
 
     public void setField (String labelName, String fieldValue){
 
-        int fieldNumber = driver.findElements(By.xpath("//td[text()='" + labelName + "'")).size();
-        WebElement field = driver.findElement(By.xpath(""));
+        WebElement field = driver.findElement(By.xpath("//td[text()='" + labelName + "']/following::input[1]"));
 
-        for (int i = 0; i < fieldNumber; i++){
+        field.sendKeys(fieldValue);
 
-            field.sendKeys(fieldValue);
-        }
+    }
 
+    public String getField (String labelName){
+
+        String s = driver.findElement(By.xpath("//td[text()='" + labelName + "']/following::input[1]")).getAttribute("value");
+
+        return s;
     }
 
     @Test
 
     public void Test1() throws Exception {
 
-        Assert.assertTrue("Password did not match.", compare("12345678", "gmail.com", "W3Hdka0clbEI+@1a"));
+        passwordIsCorrect("12345678", "gmail.com", "W3Hdka0clbEI+@1a");
         Assert.assertTrue(verifyNotCleared());
         Assert.assertTrue(verifyFieldsEnabled());
         Assert.assertEquals(getMasterLabel(), "Your master password");
@@ -138,7 +122,7 @@ public class AngelTest {
 
     public void Test2() throws Exception{
 
-        Assert.assertTrue("Password did not match.", compare("", "gmail.com", "zmcHOAyf2oZm+@1a"));
+        passwordIsCorrect("", "gmail.com", "zmcHOAyf2oZm+@1a");
         Assert.assertTrue(verifyFieldsEnabled());
         Assert.assertEquals(getMasterLabel(), "Your master password");
         Assert.assertEquals(getSiteLabel(), "Site name");
@@ -151,7 +135,7 @@ public class AngelTest {
 
     public void Test3() throws Exception{
 
-        Assert.assertTrue("Password did not match.", compare("12345678", "", "9Ixm2r5Xnm41Q@1a"));
+        passwordIsCorrect("12345678", "", "9Ixm2r5Xnm41Q@1a");
         Assert.assertTrue(verifyFieldsEnabled());
         Assert.assertEquals(getMasterLabel(), "Your master password");
         Assert.assertEquals(getSiteLabel(), "Site name");
@@ -165,7 +149,7 @@ public class AngelTest {
     public void Test4()throws Exception{
 
         Homework_6.generate();
-        Assert.assertTrue("Password did not match.", compare("", "", "BaefBs8/Z/cm2@1a"));
+        passwordIsCorrect("", "", "BaefBs8/Z/cm2@1a");
         Assert.assertTrue(verifyFieldsEnabled());
         Assert.assertEquals(getMasterLabel(), "Your master password");
         Assert.assertEquals(getSiteLabel(), "Site name");
@@ -184,10 +168,10 @@ public class AngelTest {
            s += 1;
            }
 
-        Homework_6.setMaster(s);
-        Homework_6.setSite(s);
+        setField("Your master password", s);
+        setField("Site name", s);
         Homework_6.generate();
-        String password = Homework_6.getPassword();
+        String password = getField("Generated password");
         Assert.assertEquals("Password did not match!", password, "aR8ztwNBbSqe5@1a");
         Assert.assertTrue(verifyNotCleared());
         Assert.assertTrue(verifyFieldsEnabled());
@@ -202,10 +186,10 @@ public class AngelTest {
 
     public void Test6()throws Exception {
 
-        Homework_6.setMaster("/';*&#&$@^!_...\\n");
-        Homework_6.setSite("/';*&#&$@^!_...\\n");
+        setField("Your master password", "/';*&#&$@^!_...\\n");
+        setField("Site name", "/';*&#&$@^!_...\\n");
         Homework_6.generate();
-        String password = Homework_6.getPassword();
+        String password = getField("Generated password");
         Assert.assertEquals("Password did not match!", password, "ctolW6AdI0te1@1a");
         Assert.assertTrue(verifyNotCleared());
         Assert.assertTrue(verifyFieldsEnabled());
@@ -218,9 +202,9 @@ public class AngelTest {
 
     @Test
 
-    public void Test7(){
+    public void Test7() throws  InterruptedException{
 
-        String buttonLabel = buttonGenerate.getAttribute ("value");
+        String buttonLabel = Homework_6.buttonGenerate.getAttribute("value");
         Assert.assertEquals("Label did not match!", buttonLabel, "Generate");
         Assert.assertTrue(verifyFieldsEnabled());
         Assert.assertEquals(getMasterLabel(), "Your master password");
@@ -228,8 +212,6 @@ public class AngelTest {
         Assert.assertEquals(getPasswordLabel(), "Generated password");
 
     }
-
-
 
 }
 

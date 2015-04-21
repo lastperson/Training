@@ -9,7 +9,7 @@ import org.junit.runners.JUnit4;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 
 /**
@@ -20,7 +20,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 public class AngelTest {
 
-    public WebDriver driver;
+    public static WebDriver driver;
 
     @After
 
@@ -34,11 +34,10 @@ public class AngelTest {
 
     public void initialize() throws InterruptedException {
 
-        System.setProperty("webdriver.chrome.driver", "C:/chromedriver.exe");
-        driver = new ChromeDriver();
+        driver = new FirefoxDriver();
         driver.manage().window().maximize();
         //driver.get("http://angel.net/~nic/passwd.current.html");
-        driver.get("http://oxogamestudio.com/passwd.current8.htm");
+        driver.get("http://oxogamestudio.com/passwd.current9.htm");
         while (driver.findElements(By.xpath("//input[@value='Generate']")).size() <= 0){
             Thread.sleep(100);
         }
@@ -73,7 +72,7 @@ public class AngelTest {
 
         setField("Your master password", masterPassword);
         setField("Site name",siteName);
-        Homework_6.generate();
+        Homework_6.generate(driver);
         String pwd = getField("Generated password");
         Assert.assertEquals("Password did not match.", generatedPassword, pwd);
 
@@ -136,7 +135,7 @@ public class AngelTest {
 
     public void Test4()throws Exception{
 
-        Homework_6.generate();
+        Homework_6.generate(driver);
         passwordIsCorrect("", "", "BaefBs8/Z/cm2@1a");
         Assert.assertTrue(verifyFieldsEnabled());
         Assert.assertEquals(getLabel("Your master password"), "Your master password");
@@ -158,7 +157,7 @@ public class AngelTest {
 
         setField("Your master password", s);
         setField("Site name", s);
-        Homework_6.generate();
+        Homework_6.generate(driver);
         String password = getField("Generated password");
         Assert.assertEquals("Password did not match!", password, "aR8ztwNBbSqe5@1a");
         Assert.assertTrue(verifyNotCleared());
@@ -176,7 +175,7 @@ public class AngelTest {
 
         setField("Your master password", "/';*&#&$@^!_...\\n");
         setField("Site name", "/';*&#&$@^!_...\\n");
-        Homework_6.generate();
+        Homework_6.generate(driver);
         String password = getField("Generated password");
         Assert.assertEquals("Password did not match!", password, "ctolW6AdI0te1@1a");
         Assert.assertTrue(verifyNotCleared());

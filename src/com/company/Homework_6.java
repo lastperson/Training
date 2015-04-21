@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 
+
 import java.util.List;
 
 /**
@@ -49,9 +50,15 @@ public class Homework_6 {
 
     }
 
-    public static void generate() throws InterruptedException {
+    public static void generate(WebDriver driver) throws InterruptedException {
 
-    buttonGenerate.click();
+        buttonGenerate.click();
+
+        try {
+            driver.switchTo().alert().accept();
+        } catch (Exception e){
+
+        }
 
     while (passwordField.getAttribute("value").equals(""))
         Thread.sleep(100);
@@ -108,7 +115,7 @@ public class Homework_6 {
 
         setMaster("12345678");
         setSite("gmail.com");
-        generate();
+        generate(driver);
         System.out.println(getPassword());
         verify("W3Hdka0clbEI+@1a");
 
@@ -121,7 +128,7 @@ public class Homework_6 {
         System.out.println(button());
 
         setSite("");
-        generate();
+        generate(driver);
         System.out.println(getPassword());
         verify("9Ixm2r5Xnm41Q@1a");
 

@@ -8,8 +8,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
 
 
 /**
@@ -34,86 +32,42 @@ public class AngelTest {
 
     public void initialize() throws InterruptedException {
 
-        driver = new FirefoxDriver();
+        System.setProperty("webdriver.chrome.driver", "C:/chromedriver.exe");
+        driver = new org.openqa.selenium.chrome.ChromeDriver();
         driver.manage().window().maximize();
-        //driver.get("http://angel.net/~nic/passwd.current.html");
         driver.get("http://oxogamestudio.com/passwd.current9.htm");
         while (driver.findElements(By.xpath("//input[@value='Generate']")).size() <= 0){
             Thread.sleep(100);
         }
-        Homework_6.buttonGenerate = driver.findElement(By.xpath("//input[@value='Generate']"));
-        Homework_6.masterField = driver.findElement(By.xpath("//input[@type='password']"));
-        Homework_6.siteField = driver.findElement(By.xpath("(//tr/td/input)[2]"));
-        Homework_6.passwordField = driver.findElement(By.xpath("(//tr/td/input)[4]"));
+        PassGenPage.buttonGenerate = driver.findElement(By.xpath("//input[@value='Generate']"));
+        PassGenPage.masterField = driver.findElement(By.xpath("//input[@type='password']"));
+        PassGenPage.siteField = driver.findElement(By.xpath("(//tr/td/input)[2]"));
+        PassGenPage.passwordField = driver.findElement(By.xpath("(//tr/td/input)[4]"));
         }
 
-    public boolean verifyNotCleared(){
 
-        if(!Homework_6.getMaster().equals("") && !Homework_6.getSite().equals(""))
-        return true;
-        else return false;
-    }
-
-    public boolean verifyFieldsEnabled(){
-
-        if (Homework_6.masterField.isEnabled() && Homework_6.siteField.isEnabled() && Homework_6.passwordField.isEnabled()) return true;
-        else return false;
-    }
-
-    public String getLabel(String labelName){
-
-    String s = driver.findElement(By.xpath("//td[text()='" + labelName + "']")).getText();
-
-    return s;
-
-    }
-
-    public void passwordIsCorrect (String masterPassword, String siteName, String generatedPassword) throws InterruptedException {
-
-        setField("Your master password", masterPassword);
-        setField("Site name",siteName);
-        Homework_6.generate(driver);
-        String pwd = getField("Generated password");
-        Assert.assertEquals("Password did not match.", generatedPassword, pwd);
-
-    }
-
-    public void setField (String labelName, String fieldValue){
-
-        WebElement field = driver.findElement(By.xpath("//td[text()='" + labelName + "']/following::input[1]"));
-
-        field.sendKeys(fieldValue);
-
-    }
-
-    public String getField (String labelName){
-
-        String s = driver.findElement(By.xpath("//td[text()='" + labelName + "']/following::input[1]")).getAttribute("value");
-
-        return s;
-    }
 
     @Test
 
     public void Test1() throws Exception {
 
-        passwordIsCorrect("12345678", "gmail.com", "W3Hdka0clbEI+@1a");
-        Assert.assertTrue(verifyNotCleared());
-        Assert.assertTrue(verifyFieldsEnabled());
-        Assert.assertEquals(getLabel("Your master password"), "Your master password");
-        Assert.assertEquals(getLabel("Site name"), "Site name");
-        Assert.assertEquals(getLabel("Generated password"), "Generated password");
+        PassGenPage.passwordIsCorrect("12345678", "gmail.com", "W3Hdka0clbEI+@1a");
+        Assert.assertTrue(PassGenPage.verifyNotCleared());
+        Assert.assertTrue(PassGenPage.verifyFieldsEnabled());
+        Assert.assertEquals(PassGenPage.getLabel("Your master password"), "Your master password");
+        Assert.assertEquals(PassGenPage.getLabel("Site name"), "Site name");
+        Assert.assertEquals(PassGenPage.getLabel("Generated password"), "Generated password");
     }
 
     @Test
 
     public void Test2() throws Exception{
 
-        passwordIsCorrect("", "gmail.com", "zmcHOAyf2oZm+@1a");
-        Assert.assertTrue(verifyFieldsEnabled());
-        Assert.assertEquals(getLabel("Your master password"), "Your master password");
-        Assert.assertEquals(getLabel("Site name"), "Site name");
-        Assert.assertEquals(getLabel("Generated password"), "Generated password");
+        PassGenPage.passwordIsCorrect("", "gmail.com", "zmcHOAyf2oZm+@1a");
+        Assert.assertTrue(PassGenPage.verifyFieldsEnabled());
+        Assert.assertEquals(PassGenPage.getLabel("Your master password"), "Your master password");
+        Assert.assertEquals(PassGenPage.getLabel("Site name"), "Site name");
+        Assert.assertEquals(PassGenPage.getLabel("Generated password"), "Generated password");
 
     }
 
@@ -122,11 +76,11 @@ public class AngelTest {
 
     public void Test3() throws Exception{
 
-        passwordIsCorrect("12345678", "", "9Ixm2r5Xnm41Q@1a");
-        Assert.assertTrue(verifyFieldsEnabled());
-        Assert.assertEquals(getLabel("Your master password"), "Your master password");
-        Assert.assertEquals(getLabel("Site name"), "Site name");
-        Assert.assertEquals(getLabel("Generated password"), "Generated password");
+        PassGenPage.passwordIsCorrect("12345678", "", "9Ixm2r5Xnm41Q@1a");
+        Assert.assertTrue(PassGenPage.verifyFieldsEnabled());
+        Assert.assertEquals(PassGenPage.getLabel("Your master password"), "Your master password");
+        Assert.assertEquals(PassGenPage.getLabel("Site name"), "Site name");
+        Assert.assertEquals(PassGenPage.getLabel("Generated password"), "Generated password");
 
     }
 
@@ -135,12 +89,12 @@ public class AngelTest {
 
     public void Test4()throws Exception{
 
-        Homework_6.generate(driver);
-        passwordIsCorrect("", "", "BaefBs8/Z/cm2@1a");
-        Assert.assertTrue(verifyFieldsEnabled());
-        Assert.assertEquals(getLabel("Your master password"), "Your master password");
-        Assert.assertEquals(getLabel("Site name"), "Site name");
-        Assert.assertEquals(getLabel("Generated password"), "Generated password");
+        PassGenPage.generate(driver);
+        PassGenPage.passwordIsCorrect("", "", "BaefBs8/Z/cm2@1a");
+        Assert.assertTrue(PassGenPage.verifyFieldsEnabled());
+        Assert.assertEquals(PassGenPage.getLabel("Your master password"), "Your master password");
+        Assert.assertEquals(PassGenPage.getLabel("Site name"), "Site name");
+        Assert.assertEquals(PassGenPage.getLabel("Generated password"), "Generated password");
 
     }
 
@@ -155,16 +109,16 @@ public class AngelTest {
            s += 1;
            }
 
-        setField("Your master password", s);
-        setField("Site name", s);
-        Homework_6.generate(driver);
-        String password = getField("Generated password");
+        PassGenPage.setField("Your master password", s);
+        PassGenPage.setField("Site name", s);
+        PassGenPage.generate(driver);
+        String password = PassGenPage.getField("Generated password");
         Assert.assertEquals("Password did not match!", password, "aR8ztwNBbSqe5@1a");
-        Assert.assertTrue(verifyNotCleared());
-        Assert.assertTrue(verifyFieldsEnabled());
-        Assert.assertEquals(getLabel("Your master password"), "Your master password");
-        Assert.assertEquals(getLabel("Site name"), "Site name");
-        Assert.assertEquals(getLabel("Generated password"), "Generated password");
+        Assert.assertTrue(PassGenPage.verifyNotCleared());
+        Assert.assertTrue(PassGenPage.verifyFieldsEnabled());
+        Assert.assertEquals(PassGenPage.getLabel("Your master password"), "Your master password");
+        Assert.assertEquals(PassGenPage.getLabel("Site name"), "Site name");
+        Assert.assertEquals(PassGenPage.getLabel("Generated password"), "Generated password");
 
     }
 
@@ -173,16 +127,16 @@ public class AngelTest {
 
     public void Test6()throws Exception {
 
-        setField("Your master password", "/';*&#&$@^!_...\\n");
-        setField("Site name", "/';*&#&$@^!_...\\n");
-        Homework_6.generate(driver);
-        String password = getField("Generated password");
+        PassGenPage.setField("Your master password", "/';*&#&$@^!_...\\n");
+        PassGenPage.setField("Site name", "/';*&#&$@^!_...\\n");
+        PassGenPage.generate(driver);
+        String password = PassGenPage.getField("Generated password");
         Assert.assertEquals("Password did not match!", password, "ctolW6AdI0te1@1a");
-        Assert.assertTrue(verifyNotCleared());
-        Assert.assertTrue(verifyFieldsEnabled());
-        Assert.assertEquals(getLabel("Your master password"), "Your master password");
-        Assert.assertEquals(getLabel("Site name"), "Site name");
-        Assert.assertEquals(getLabel("Generated password"), "Generated password");
+        Assert.assertTrue(PassGenPage.verifyNotCleared());
+        Assert.assertTrue(PassGenPage.verifyFieldsEnabled());
+        Assert.assertEquals(PassGenPage.getLabel("Your master password"), "Your master password");
+        Assert.assertEquals(PassGenPage.getLabel("Site name"), "Site name");
+        Assert.assertEquals(PassGenPage.getLabel("Generated password"), "Generated password");
 
     }
 
@@ -191,12 +145,12 @@ public class AngelTest {
 
     public void Test7() throws  InterruptedException{
 
-        String buttonLabel = Homework_6.buttonGenerate.getAttribute("value");
+        String buttonLabel = PassGenPage.buttonGenerate.getAttribute("value");
         Assert.assertEquals("Label did not match!", buttonLabel, "Generate");
-        Assert.assertTrue(verifyFieldsEnabled());
-        Assert.assertEquals(getLabel("Your master password"), "Your master password");
-        Assert.assertEquals(getLabel("Site name"), "Site name");
-        Assert.assertEquals(getLabel("Generated password"), "Generated password");
+        Assert.assertTrue(PassGenPage.verifyFieldsEnabled());
+        Assert.assertEquals(PassGenPage.getLabel("Your master password"), "Your master password");
+        Assert.assertEquals(PassGenPage.getLabel("Site name"), "Site name");
+        Assert.assertEquals(PassGenPage.getLabel("Generated password"), "Generated password");
 
     }
 

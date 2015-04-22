@@ -35,7 +35,7 @@ public class AngelTest {
         System.setProperty("webdriver.chrome.driver", "C:/chromedriver.exe");
         driver = new org.openqa.selenium.chrome.ChromeDriver();
         driver.manage().window().maximize();
-        driver.get("http://oxogamestudio.com/passwd.current9.htm");
+        PassGenPage.open(driver);
         while (driver.findElements(By.xpath("//input[@value='Generate']")).size() <= 0){
             Thread.sleep(100);
         }

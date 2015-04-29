@@ -16,10 +16,16 @@ public class PassGenPage {
     public static WebElement passwordField;
     public static WebElement buttonGenerate;
 
+
+
     public static void open (WebDriver dr){
         
         driver = dr;
         dr.get("http://oxogamestudio.com/passwd.current9.htm");
+        PassGenPage.buttonGenerate = driver.findElement(By.xpath("//input[@value='Generate']"));
+        PassGenPage.masterField = driver.findElement(By.xpath("//input[@type='password']"));
+        PassGenPage.siteField = driver.findElement(By.xpath("(//tr/td/input)[2]"));
+        PassGenPage.passwordField = driver.findElement(By.xpath("(//tr/td/input)[4]"));
 
     }
 

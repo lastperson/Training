@@ -39,11 +39,7 @@ public class AngelTest {
         while (driver.findElements(By.xpath("//input[@value='Generate']")).size() <= 0){
             Thread.sleep(100);
         }
-        PassGenPage.buttonGenerate = driver.findElement(By.xpath("//input[@value='Generate']"));
-        PassGenPage.masterField = driver.findElement(By.xpath("//input[@type='password']"));
-        PassGenPage.siteField = driver.findElement(By.xpath("(//tr/td/input)[2]"));
-        PassGenPage.passwordField = driver.findElement(By.xpath("(//tr/td/input)[4]"));
-        }
+    }
 
 
 

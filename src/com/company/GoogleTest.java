@@ -10,7 +10,12 @@ import org.junit.runners.JUnit4;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+
+import java.util.List;
+
 import static com.company.GooglePage.*;
+import static com.company.GooglePage.findElement;
 
 
 /**
@@ -47,7 +52,7 @@ public class GoogleTest {
 
     public void Test1(){
 
-        Assert.assertTrue(isEmpty(inputField));
+        Assert.assertTrue(verifyIsEmpty(inputField));
 
     }
 
@@ -73,7 +78,7 @@ public class GoogleTest {
 
     public void Test4(){
 
-    Assert.assertTrue(verifyEditable(resultField)); //IMPLEMENT VERIFY NOT EDITABLE!!
+    Assert.assertTrue(verifyNotEditable(resultField));
 
     }
 
@@ -81,38 +86,68 @@ public class GoogleTest {
 
     public void Test5(){
 
-        findElement(languageArrow).click();
+        findElement(inputLanguageArrow).click();
+        List<String> languages = getLaunguages();
+        Assert.assertTrue(verifyLanguagePresent(languages, new String[]{"Greek", "Maltese", "Slovenian"}));
+    }
 
+    @Test
+
+    public void Test6()throws Exception{
+
+        findElement(inputField).sendKeys("Hello");
+        Assert.assertTrue(verifyPresent(loudspeakerButton));
 
     }
 
     @Test
 
-    public void Test6(){
+    public void Test7()throws Exception{
+
+        findElement(inputField).sendKeys("Hello");
+        Assert.assertTrue(verifyPresent(result));
+        Assert.assertTrue(verifySpanIsNotEmpty(result));
 
     }
 
     @Test
 
-    public void Test7(){
+    public void Test8()throws Exception{
+
+        setInputLanguage("English");
+        setOtputLanguage("Spanish");
+        findElement(inputField).sendKeys("Hello");
+        Assert.assertTrue(verifyPresent(result));
+        Assert.assertEquals("hola", getSpan(result));
 
     }
 
     @Test
 
-    public void Test8(){
+    public void Test9()throws Exception{
+
+        findElement(inputField).sendKeys("Hello");
+        Assert.assertTrue(verifyPresent(result));
+        findElement(clearButton).click();
+        Assert.assertTrue(verifySpanIsEmpty(resultField));
 
     }
 
     @Test
 
-    public void Test9(){
+    public void Test10()throws Exception{
 
-    }
+        setInputLanguage("Ukrainian");
+        setOtputLanguage("Chinese (Simplified)");
+        findElement(inputField).sendKeys("Слава Україні! Героям Слава!");
+        Assert.assertTrue(verifyPresent(result));
+        Assert.assertEquals("光荣属于乌克兰！光荣属于英雄！", getSpanNoSpaces(result));
 
-    @Test
-
-    public void Test10(){
+        findElement(inputField).clear();
+        findElement(inputField).sendKeys("Слава Україні! Героям Слава!");
+        setOtputLanguage("Spanish");
+        Assert.assertTrue(verifyPresent(result));
+        Assert.assertEquals("Gloria a Ucrania! ¡Gloria a los héroes!", getSpan(result));
 
     }
 

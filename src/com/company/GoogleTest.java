@@ -7,15 +7,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.*;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-
-import java.util.List;
-
 import static com.company.GooglePage.*;
-import static com.company.GooglePage.findElement;
+
 
 
 /**
@@ -25,28 +18,20 @@ import static com.company.GooglePage.findElement;
 
 public class GoogleTest {
 
-    public WebDriver driver;
-
-
 @Before
 
     public void initialize(){
 
-    System.setProperty("webdriver.chrome.driver", "C:/chromedriver.exe");
-    ChromeOptions options = new ChromeOptions();
-    options.addArguments("--lang=en");
-    driver = new ChromeDriver(options);
-    //driver = new FirefoxDriver();
-    open(driver);
+    open();
+
 }
 
 @After
 
-    public void clean(){
+   public void cleanUp () {
 
-    driver.quit();
-
-}
+        clean();
+    }
 
     @Test
 
@@ -78,7 +63,7 @@ public class GoogleTest {
 
     public void Test4(){
 
-    Assert.assertTrue(verifyNotEditable(resultField));
+         Assert.assertTrue(verifyNotEditable(resultField));
 
     }
 
@@ -86,16 +71,14 @@ public class GoogleTest {
 
     public void Test5(){
 
-        findElement(inputLanguageArrow).click();
-        List<String> languages = getLaunguages();
-        Assert.assertTrue(verifyLanguagePresent(languages, new String[]{"Greek", "Maltese", "Slovenian"}));
+        Assert.assertTrue(verifyLanguagePresent(getLaunguages(), new String[]{"Greek", "Maltese", "Slovenian"}));
     }
 
     @Test
 
     public void Test6()throws Exception{
 
-        findElement(inputField).sendKeys("Hello");
+        setField(inputField, "Hello");
         Assert.assertTrue(verifyPresent(loudspeakerButton));
 
     }
@@ -104,9 +87,9 @@ public class GoogleTest {
 
     public void Test7()throws Exception{
 
-        findElement(inputField).sendKeys("Hello");
+        setField(inputField, "Hello");
         Assert.assertTrue(verifyPresent(result));
-        Assert.assertTrue(verifySpanIsNotEmpty(result));
+        Assert.assertTrue(verifyIsNotEmpty(result));
 
     }
 
@@ -114,11 +97,7 @@ public class GoogleTest {
 
     public void Test8()throws Exception{
 
-        setInputLanguage("English");
-        setOtputLanguage("Spanish");
-        findElement(inputField).sendKeys("Hello");
-        Assert.assertTrue(verifyPresent(result));
-        Assert.assertEquals("hola", getSpan(result));
+        Assert.assertEquals("Hola!", getTranslation("English", "Spanish", "Hello!"));
 
     }
 
@@ -126,10 +105,10 @@ public class GoogleTest {
 
     public void Test9()throws Exception{
 
-        findElement(inputField).sendKeys("Hello");
+        setField(inputField, "Hello");
         Assert.assertTrue(verifyPresent(result));
-        findElement(clearButton).click();
-        Assert.assertTrue(verifySpanIsEmpty(resultField));
+        clearInput();
+        Assert.assertTrue(verifyIsEmpty(resultField));
 
     }
 
@@ -137,17 +116,11 @@ public class GoogleTest {
 
     public void Test10()throws Exception{
 
-        setInputLanguage("Ukrainian");
-        setOtputLanguage("Chinese (Simplified)");
-        findElement(inputField).sendKeys("Слава Україні! Героям Слава!");
-        Assert.assertTrue(verifyPresent(result));
-        Assert.assertEquals("光荣属于乌克兰！光荣属于英雄！", getSpanNoSpaces(result));
+        Assert.assertEquals("光荣属于乌克兰！光荣属于英雄！", getTranslation("Ukrainian", "Chinese (Simplified)", "Слава Україні! Героям Слава!"));
 
-        findElement(inputField).clear();
-        findElement(inputField).sendKeys("Слава Україні! Героям Слава!");
-        setOtputLanguage("Spanish");
-        Assert.assertTrue(verifyPresent(result));
-        Assert.assertEquals("Gloria a Ucrania! ¡Gloria a los héroes!", getSpan(result));
+        clearInput();
+
+        Assert.assertEquals("Gloria a Ucrania! ¡Gloria a los héroes!", getTranslation("Ukrainian", "Spanish", "Слава Україні! Героям Слава!"));
 
     }
 

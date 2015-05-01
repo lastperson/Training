@@ -1,14 +1,14 @@
 package com.company;
 
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.*;
+import org.openqa.selenium.chrome.ChromeDriver;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -27,41 +27,54 @@ public class GooglePage {
     public static String loudspeakerButton = "//div[@id = 'gt-res-listen']";
     public static String clearButton = "//div[@id = 'gt-clear']";
 
+    public static void open() {
 
-    public static void open(WebDriver driver) {
-
-        GooglePage.driver = driver;
+        System.setProperty("webdriver.chrome.driver", "C:/chromedriver.exe");
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--lang=en");
+        driver = new ChromeDriver(options);
         driver.get("https://translate.google.com");
     }
 
-    public static WebElement findElement(String xpath) {
+    public static void clean(){
 
-        WebElement result = driver.findElement(By.xpath(xpath));
-        return result;
+        driver.quit();
+
     }
 
-    public static boolean verifyIsEmpty(String xpath) {
+    public static WebElement getElement (String xpath){
 
-        if (driver.findElement(By.xpath(xpath)).getAttribute("value").equals("")) return true;
-        else return false;
+        return driver.findElement(By.xpath(xpath));
+
+    }
+
+    public static void setField (String xpath, String value){
+
+        getElement(xpath).sendKeys(value);
+    }
+
+    public static void clearInput (){
+
+        getElement(clearButton).click();
+    }
+
+   public static boolean verifyIsEmpty(String xpath) {
+
+       if (getElement(xpath).getTagName().equals("span")){
+           if (getElement(xpath).getText().equals("")) return true;
+                return false;}
+           else if (getElement(xpath).getAttribute("value").equals("")) return true;
+       return false;
+
     }
 
     public static boolean verifyIsNotEmpty(String xpath) {
 
-        if (!driver.findElement(By.xpath(xpath)).getAttribute("value").equals("")) return true;
-        else return false;
-    }
-
-    public static boolean verifySpanIsEmpty(String xpath) {
-
-        if (driver.findElement(By.xpath(xpath)).getText().equals("")) return true;
-        else return false;
-    }
-
-    public static boolean verifySpanIsNotEmpty(String xpath) {
-
-        if (!driver.findElement(By.xpath(xpath)).getText().equals("")) return true;
-        else return false;
+        if (getElement(xpath).getTagName().equals("span")){
+            if (!getElement(xpath).getText().equals("")) return true;
+            return false;}
+        else if (!getElement(xpath).getAttribute("value").equals("")) return true;
+            return false;
     }
 
     public static String getTitle(WebDriver driver) {
@@ -83,50 +96,39 @@ public class GooglePage {
         return true;
     }
 
-    public static boolean verifyEditable(String xpath) {
+   public static boolean verifyNotEditable(String xpath) {
 
-        if (findElement(xpath).isEnabled() && !findElement(xpath).getTagName().equals("span")) return true;
-        else return false;
-    }
-
-    public static boolean verifyNotEditable(String xpath) {
-
+        WebElement element = getElement(xpath);
         String test = "test";
-        WebElement inputField = driver.findElement(By.xpath(xpath));
+
         try {
-            inputField.sendKeys(test);
+            element.sendKeys(test);
         } catch (WebDriverException e) {
             System.out.println("Cannot focus element");
             return true;
         }
-        if (inputField.getAttribute("value").equals(test)) return false;
+        if (element.getAttribute("value").equals(test)) return false;
         return true;
     }
 
     public static void setInputLanguage (String language){
 
-        findElement(inputLanguageArrow).click();
-        List<WebElement> items = driver.findElements(By.xpath("//div[@class='goog-menuitem-content']"));
+        getElement(inputLanguageArrow).click();
+        WebElement lang = driver.findElement(By.xpath("//div[@id = 'gt-sl-gms-menu']//*[text()='" + language + "']"));
+        lang.click();
 
-        for (WebElement item : items){
-
-            if (item.getText().equals(language)) item.click();
-        }
     }
 
-    public static void setOtputLanguage (String language){
+    public static void setOutputLanguage(String language){
 
-        findElement(outputLanguageArrow).click();
-        List<WebElement> items = driver.findElements(By.xpath("//div[@class='goog-menuitem-content']"));
-
-        for (WebElement item : items){
-
-            if (item.getText().equals(language)) item.click();
-        }
+        getElement(outputLanguageArrow).click();
+        WebElement lang = driver.findElement(By.xpath("//div[@id = 'gt-tl-gms-menu']//*[text()='" + language + "']"));
+        lang.click();
     }
 
     public static List<String> getLaunguages() {
 
+        getElement(inputLanguageArrow).click();
         List<String> languages = new ArrayList<String>();
 
         List<WebElement> items = driver.findElements(By.xpath("//div[@class='goog-menuitem-content']"));
@@ -148,50 +150,37 @@ public class GooglePage {
 
         List<String> list = Arrays.asList(langs);
 
-        if (langList.containsAll(list))return true;
-        return false;
+        return langList.containsAll(list);
     }
 
-    public static String getValue (String xpath){
+    public static String getTranslation (String inputLanguage, String outputLanguage, String phrase)throws Exception{
 
-        String s = "";
-        WebElement element = driver.findElement(By.xpath(xpath));
-        s = element.getAttribute("value");
-        return s;
-    }
+        setInputLanguage(inputLanguage);
+        setOutputLanguage(outputLanguage);
+        setField(inputField, phrase);
+        Assert.assertTrue(verifyPresent(result));
 
-    public static String getSpan (String xpath){
-
-        List<String> result = new ArrayList<String>();
-        List<WebElement> items = driver.findElements(By.xpath(xpath));
+        List<String> results = new ArrayList<String>();
+        List<WebElement> items = driver.findElements(By.xpath(result));
 
         for (WebElement item : items) {
-            result.add(item.getText());
+            results.add(item.getText());
         }
 
         String s = "";
 
-        for (int i = 0;i < result.size(); i++ ){
-            if (i+1 == result.size() || result.get(i+1).equals("!")) {
-                s += result.get(i);
-                } else s += result.get(i) + " ";
+        if (outputLanguage == "Chinese (Simplified)") {
+
+            for (String word : results) s += word;
+            return s;
+        } else {
+            for (int i = 0;i < results.size(); i++ ){
+                if (i+1 == results.size() || results.get(i+1).equals("!")) {
+                    s += results.get(i);
+                } else s += results.get(i) + " ";
+            }
+
+            return s;
         }
-
-    return s;
-    }
-
-    public static String getSpanNoSpaces (String xpath){
-
-        List<String> result = new ArrayList<String>();
-        List<WebElement> items = driver.findElements(By.xpath(xpath));
-
-        for (WebElement item : items) {
-            result.add(item.getText());
-        }
-
-        String s = "";
-
-        for (String word : result) s+= word;
-        return s;
     }
 }

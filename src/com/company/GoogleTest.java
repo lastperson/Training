@@ -45,7 +45,7 @@ public class GoogleTest {
 
     public void Test2(){
 
-        Assert.assertEquals("Google Translate", getTitle(driver));
+        Assert.assertEquals("Google Translate", getTitle());
 
     }
 

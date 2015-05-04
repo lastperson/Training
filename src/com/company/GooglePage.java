@@ -77,7 +77,7 @@ public class GooglePage {
             return false;
     }
 
-    public static String getTitle(WebDriver driver) {
+    public static String getTitle() {
 
         String s = driver.getTitle();
         return s;
@@ -158,7 +158,7 @@ public class GooglePage {
         setInputLanguage(inputLanguage);
         setOutputLanguage(outputLanguage);
         setField(inputField, phrase);
-        Assert.assertTrue(verifyPresent(result));
+        verifyPresent(result);
 
         List<String> results = new ArrayList<String>();
         List<WebElement> items = driver.findElements(By.xpath(result));

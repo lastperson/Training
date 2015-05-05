@@ -97,7 +97,11 @@ public class GoogleTest {
 
     public void Test8()throws Exception{
 
-        Assert.assertEquals("Hola!", getTranslation("English", "Spanish", "Hello!"));
+        setInputLanguage("Ukrainian");
+        setOutputLanguage("Spanish");
+        setField(inputField, "Слава Україні! Героям Слава!");
+        verifyPresent(result);
+        Assert.assertEquals("Gloria a Ucrania! ¡Gloria a los héroes!", getField(resultField));
 
     }
 
@@ -116,17 +120,35 @@ public class GoogleTest {
 
     public void Test10()throws Exception{
 
-        Assert.assertEquals("光荣属于乌克兰！光荣属于英雄！", getTranslation("Ukrainian", "Chinese (Simplified)", "Слава Україні! Героям Слава!"));
+        setInputLanguage("Ukrainian");
+        setOutputLanguage("Indonesian");
+        setField(inputField, "Слава Україні! Героям Слава!");
+        verifyPresent(result);
+        Assert.assertEquals("Glory ke Ukraina! Kemenangan bagi Pahlawan!", getField(resultField));
 
-        clearInput();
+        setOutputLanguage("Spanish");
+        verifyPresent(result);
+        Assert.assertEquals("Gloria a Ucrania! ¡Gloria a los héroes!", getField(resultField));
 
-        Assert.assertEquals("Gloria a Ucrania! ¡Gloria a los héroes!", getTranslation("Ukrainian", "Spanish", "Слава Україні! Героям Слава!"));
+        }
 
+    @Test
+
+    public void Test11(){
+
+        openUrl("https://translate.google.com/#uk/jw/Hello");
+        Assert.assertEquals("Ukrainian", getInputLanguageSelected());
+        Assert.assertEquals("Javanese", getOutputLanguageSelected());
+        Assert.assertEquals("Hello", getField(inputField));
+        Assert.assertEquals("Hello", getField(resultField));
     }
 
+    @Test
 
+    public void Test12(){
 
+    Assert.assertTrue(verifyUpperLeftButtons(new String[]{"English","Spanish","French"}));
+    Assert.assertTrue(verifyUpperRightButtons(new String[]{"English","Spanish","Arabic"}));
 
-
-
+    }
 }

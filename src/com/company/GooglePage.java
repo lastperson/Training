@@ -26,6 +26,10 @@ public class GooglePage {
     public static String outputLanguageArrow = "//div[@id='gt-tl-gms']";
     public static String loudspeakerButton = "//div[@id = 'gt-res-listen']";
     public static String clearButton = "//div[@id = 'gt-clear']";
+    public static String upperLeftLanguageButtons = "//div[@id = 'gt-sl-sugg']/div[@role = 'button']";
+    public static String upperRightLanguageButtons = "//div[@id = 'gt-tl-sugg']/div[@role = 'button']";
+    public static String selectedInputLanguage = "//div[@id = 'gt-sl-sugg']/div[@role = 'button'][@aria-pressed = 'true']";
+    public static String selectedOutputLanguage = "//div[@id = 'gt-tl-sugg']/div[@role = 'button'][@aria-pressed = 'true']";
 
     public static void open() {
 
@@ -34,6 +38,11 @@ public class GooglePage {
         options.addArguments("--lang=en");
         driver = new ChromeDriver(options);
         driver.get("https://translate.google.com");
+    }
+
+    public static void openUrl (String url){
+
+        driver.get(url);
     }
 
     public static void clean(){
@@ -48,17 +57,25 @@ public class GooglePage {
 
     }
 
-    public static void setField (String xpath, String value){
-
-        getElement(xpath).sendKeys(value);
-    }
-
     public static void clearInput (){
 
         getElement(clearButton).click();
     }
 
-   public static boolean verifyIsEmpty(String xpath) {
+    public static void setField (String xpath, String value){
+
+        getElement(xpath).sendKeys(value);
+    }
+
+    public static String getField (String xpath){
+
+        if (getElement(xpath).getTagName().equals("span")){
+            return getElement(xpath).getText();
+        }
+        else return getElement(xpath).getAttribute("value");
+    }
+
+     public static boolean verifyIsEmpty(String xpath) {
 
        if (getElement(xpath).getTagName().equals("span")){
            if (getElement(xpath).getText().equals("")) return true;
@@ -153,34 +170,48 @@ public class GooglePage {
         return langList.containsAll(list);
     }
 
-    public static String getTranslation (String inputLanguage, String outputLanguage, String phrase)throws Exception{
+    public static String getInputLanguageSelected (){
 
-        setInputLanguage(inputLanguage);
-        setOutputLanguage(outputLanguage);
-        setField(inputField, phrase);
-        verifyPresent(result);
+        return getElement(selectedInputLanguage).getText();
 
-        List<String> results = new ArrayList<String>();
-        List<WebElement> items = driver.findElements(By.xpath(result));
-
-        for (WebElement item : items) {
-            results.add(item.getText());
-        }
-
-        String s = "";
-
-        if (outputLanguage == "Chinese (Simplified)") {
-
-            for (String word : results) s += word;
-            return s;
-        } else {
-            for (int i = 0;i < results.size(); i++ ){
-                if (i+1 == results.size() || results.get(i+1).equals("!")) {
-                    s += results.get(i);
-                } else s += results.get(i) + " ";
-            }
-
-            return s;
-        }
     }
+
+    public static String getOutputLanguageSelected (){
+
+        return getElement(selectedOutputLanguage).getText();
+
+    }
+
+    public static boolean verifyUpperLeftButtons (String[] languages){
+
+        List<String> list = new ArrayList<String>();
+
+        String lang1 = getElement(upperLeftLanguageButtons + "[1]").getText();
+        String lang2 = getElement(upperLeftLanguageButtons + "[2]").getText();
+        String lang3 = getElement(upperLeftLanguageButtons + "[3]").getText();
+
+        list.add(lang1);
+        list.add(lang2);
+        list.add(lang3);
+
+        if (list.containsAll(Arrays.asList(languages))) return true;
+        return false;
+    }
+
+    public static boolean verifyUpperRightButtons (String[] languages){
+
+        List<String> list = new ArrayList<String>();
+
+        String lang1 = getElement(upperRightLanguageButtons + "[1]").getText();
+        String lang2 = getElement(upperRightLanguageButtons + "[2]").getText();
+        String lang3 = getElement(upperRightLanguageButtons + "[3]").getText();
+
+        list.add(lang1);
+        list.add(lang2);
+        list.add(lang3);
+
+        if (list.containsAll(Arrays.asList(languages))) return true;
+        return false;
+    }
+
 }

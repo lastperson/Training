@@ -214,4 +214,8 @@ public class GooglePage {
         return false;
     }
 
+    public static void translate() {
+        getElement(translateButton).click();
+    }
+
 }

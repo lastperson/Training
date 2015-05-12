@@ -127,6 +127,7 @@ public class GoogleTest {
         Assert.assertEquals("Glory ke Ukraina! Kemenangan bagi Pahlawan!", getField(resultField));
 
         setOutputLanguage("Spanish");
+        translate();
         verifyPresent(result);
         Assert.assertEquals("Gloria a Ucrania! ¡Gloria a los héroes!", getField(resultField));
 

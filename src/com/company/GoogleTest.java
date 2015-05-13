@@ -100,6 +100,7 @@ public class GoogleTest {
         setInputLanguage("Ukrainian");
         setOutputLanguage("Spanish");
         setField(inputField, "Слава Україні! Героям Слава!");
+        translate();
         verifyPresent(result);
         Assert.assertEquals("Gloria a Ucrania! ¡Gloria a los héroes!", getField(resultField));
 
@@ -123,6 +124,7 @@ public class GoogleTest {
         setInputLanguage("Ukrainian");
         setOutputLanguage("Indonesian");
         setField(inputField, "Слава Україні! Героям Слава!");
+        translate();
         verifyPresent(result);
         Assert.assertEquals("Glory ke Ukraina! Kemenangan bagi Pahlawan!", getField(resultField));
 

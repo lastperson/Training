@@ -1,5 +1,6 @@
 package com.company;
 
+import com.google.common.primitives.Chars;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
@@ -7,6 +8,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import java.nio.charset.Charset;
 import java.util.*;
 
 
@@ -70,7 +72,8 @@ public class GooglePage {
     public static String getField (String xpath){
 
         if (getElement(xpath).getTagName().equals("span")){
-            return getElement(xpath).getText();
+            String tmp = getElement(xpath).getText();
+            return new String (tmp.getBytes(Charset.forName("utf-8")));
         }
         else return getElement(xpath).getAttribute("value");
     }

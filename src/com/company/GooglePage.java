@@ -33,7 +33,7 @@ public class GooglePage {
     public static void open() {
 
         //System.setProperty("webdriver.chrome.driver", "C:/chromedriver.exe");
-        System.setProperty("webdriver.chrome.driver", "usr/local/bin/chromedriver");
+        System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--lang=en");
         driver = new ChromeDriver(options);

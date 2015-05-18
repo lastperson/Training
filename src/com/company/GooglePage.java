@@ -1,18 +1,15 @@
 package com.company;
 
-import com.google.common.primitives.Chars;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.WebElement;
+
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.htmlunit.HtmlUnitDriver;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.nio.charset.Charset;
 import java.util.*;
+
 
 
 /**
@@ -35,16 +32,16 @@ public class GooglePage {
     public static String selectedInputLanguage = "//div[@id = 'gt-sl-sugg']/div[@role = 'button'][@aria-pressed = 'true']";
     public static String selectedOutputLanguage = "//div[@id = 'gt-tl-sugg']/div[@role = 'button'][@aria-pressed = 'true']";
 
+
     public static void open() {
 
-        //System.setProperty("webdriver.chrome.driver", "C:/chromedriver.exe");
-        //System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
-        /*ChromeOptions options = new ChromeOptions();
+        System.setProperty("webdriver.chrome.driver", "C:/chromedriver.exe");
+        ChromeOptions options = new ChromeOptions();
         options.addArguments("--lang=en");
-        driver = new ChromeDriver(options);*/
-        driver = new FirefoxDriver();
+        driver = new ChromeDriver(options);
         driver.get("https://translate.google.com");
-    }
+
+        }
 
     public static void openUrl (String url){
 
@@ -61,7 +58,7 @@ public class GooglePage {
 
         return driver.findElement(By.xpath(xpath));
 
-    }
+        }
 
     public static void clearInput (){
 
@@ -76,8 +73,7 @@ public class GooglePage {
     public static String getField (String xpath){
 
         if (getElement(xpath).getTagName().equals("span")){
-            String tmp = getElement(xpath).getText();
-            return new String (tmp.getBytes(Charset.forName("utf-8")));
+            return getElement(xpath).getText();
         }
         else return getElement(xpath).getAttribute("value");
     }
@@ -127,10 +123,11 @@ public class GooglePage {
 
         try {
             element.sendKeys(test);
-        } catch (WebDriverException e) {
+            } catch (WebDriverException e) {
             System.out.println("Cannot focus element");
             return true;
         }
+
         if (element.getAttribute("value").equals(test)) return false;
         return true;
     }
@@ -221,7 +218,8 @@ public class GooglePage {
         return false;
     }
 
-    public static void translate() {
+    public static void translate(){
+
         getElement(translateButton).click();
     }
 

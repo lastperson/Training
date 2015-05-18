@@ -49,12 +49,8 @@ public class UZ_test {
         openPlan("043 К");
         chooseCoach("5");
         choosePlace("29");
-
-
-
-
-
-
+        setField(lastName, "Doe");
+        setField(firstName, "John");
     }
 
 

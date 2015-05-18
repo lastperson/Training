@@ -1,6 +1,7 @@
 package com.company;
 
 
+import com.google.common.base.Verify;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -103,8 +104,7 @@ public class GoogleTest {
         translate();
         verifyPresent(result);
         Assert.assertEquals("Gloria a Ucrania! ¡Gloria a los héroes!", getField(resultField));
-
-    }
+        }
 
     @Test
 
@@ -132,7 +132,6 @@ public class GoogleTest {
         translate();
         verifyPresent(result);
         Assert.assertEquals("Gloria a Ucrania! ¡Gloria a los héroes!", getField(resultField));
-
         }
 
     @Test

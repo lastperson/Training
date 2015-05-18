@@ -1,13 +1,11 @@
 package com.company;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.*;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.seleniumhq.jetty7.util.thread.Timeout;
 
 import java.nio.charset.Charset;
 import java.util.NoSuchElementException;
@@ -23,7 +21,8 @@ public class UZ_PageObject {
     public static final String searchButton = "//button[@name='search']";
     public static final String resultTable = "//table[@id='ts_res_tbl']";
     public static final String routeWindow = "//span[text()='Train route']/../..";
-    public static final String chooseCoupeButton = "//div[contains(@title,'Coupe')]";
+    public static final String lastName = "//input[@class='lastname']";
+    public static final String firstName = "//input[@class='firstname']";
     public static WebDriver driver;
 
     public static void open(){
@@ -49,10 +48,10 @@ public class UZ_PageObject {
 
     }
 
-    /*public static void clearInput (){
+    public static void setField (String field, String value){
 
-        getElement(clearButton).click();
-    }*/
+        getElement(field).sendKeys(value);
+    }
 
     public static void setFromField (String value){
 
@@ -76,16 +75,7 @@ public class UZ_PageObject {
         }
     }
 
-    public static String getField (String xpath){
-
-        if (getElement(xpath).getTagName().equals("span")){
-            String tmp = getElement(xpath).getText();
-            return new String (tmp.getBytes(Charset.forName("utf-8")));
-        }
-        else return getElement(xpath).getAttribute("value");
-    }
-
-    public static void setDepDate (String month, String day){
+   public static void setDepDate (String month, String day){
 
         getElement(depDate).click();
         getElement("//caption[text()='" + month + "']/..//td[text()='" + day + "']").click();
@@ -110,8 +100,8 @@ public class UZ_PageObject {
 
         try{
 
-         getElement(resultTable).findElement(By.xpath("//a[text()='" + trainNo + "']"));
-        }catch (NoSuchElementException e){
+         new WebDriverWait(driver,10).until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[text()='" + trainNo + "']")));
+        }catch (TimeoutException e){
             System.out.println("No such train found!");
             return false;
         }
@@ -127,7 +117,7 @@ public class UZ_PageObject {
     public static boolean verifyPresent (String xpath){
 
         try {
-            WebElement element = new WebDriverWait(driver, 10).until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpath)));
+            new WebDriverWait(driver, 10).until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpath)));
         }catch (TimeoutException e){
             System.out.println("No element found!");
             return false;
@@ -143,20 +133,51 @@ public class UZ_PageObject {
 
     public static void openPlan(String trainNo) {
 
-        getElement("//a[text()='" + trainNo + "']/../following-sibling::td[@class='place']/div[starts-with(@title,'Coupe')]/button[text()='Choose']").click();
+        try {
+            Thread.sleep(1500); //CHANGE THIS BULLSHIT HERE!
+            WebElement selectButton = new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[text()='" + trainNo + "']/../following-sibling::td[@class='place']/div[starts-with(@title,'Coupe')]/button[text()='Choose']")));
+            selectButton.click();
+        }catch (TimeoutException e){
+            System.out.println("Could not click Select button!");
+        }catch (InterruptedException e){
+            System.out.println("Could not click Select button!");
+        }
 
     }
 
     public static void chooseCoach(String coach) {
 
-        getElement("//span[@class='coaches']/a[@href='#" +  coach + "']").click();
+        try {
+            new WebDriverWait(driver, 10).until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[text()='Select your place']")));
+        }catch (TimeoutException e){
+            System.out.println("Plan did not open!");
+        }
+        getElement("//span[@class='coaches']/a[@href='#" + coach + "']").click();
 
     }
 
     public static void choosePlace(String place) {
 
-        getElement("//span[@id='places']//span[text()='" + place + "']");
-
+        try {
+            WebElement placeButton = new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(By.xpath("//span[@id='places']//span[text()='" + place + "']")));
+            int count = 0;
+            while (driver.findElements(By.xpath("//input[@class='lastname']")).size() < 1) {
+                try {
+                    placeButton.click();
+                }catch (StaleElementReferenceException e){
+                    placeButton = new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(By.xpath("//span[@id='places']//span[text()='" + place + "']")));
+                    placeButton.click();
+                }
+                Thread.sleep(100);
+                count++;
+                if (count > 5){
+                System.out.println("Last name field did not show up!");
+                    break;
+                    }
+                }
+            }catch (InterruptedException e) {
+        }
     }
+
 }
 

@@ -159,7 +159,10 @@ public class UZ_PageObject {
     public static void choosePlace(String place) {
 
         try {
-            WebElement placeButton = new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(By.xpath("//span[@id='places']//span[text()='" + place + "']")));
+            WebElement placeButton = new WebDriverWait(driver, 10).until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[@id='places']//span[text()='" + place + "']")));
+            if (placeButton.getCssValue("color").equals("rgba(204, 204, 204, 1)")) {
+                System.out.println("Place already taken!");
+            }
             int count = 0;
             while (driver.findElements(By.xpath("//input[@class='lastname']")).size() < 1) {
                 try {

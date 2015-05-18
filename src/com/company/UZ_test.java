@@ -47,7 +47,7 @@ public class UZ_test {
         verifyPresent(routeWindow);
         close (routeWindow);
         openPlan("043 К");
-        chooseCoach("6");
+        chooseCoach("5");
         choosePlace("29");
         setField(lastName, "Doe");
         setField(firstName, "John");

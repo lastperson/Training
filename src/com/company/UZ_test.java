@@ -29,7 +29,7 @@ public class UZ_test {
 
     public void cleanUp () {
 
-        //clean();
+        clean();
     }
 
     @Test
@@ -52,9 +52,4 @@ public class UZ_test {
         setField(lastName, "Doe");
         setField(firstName, "John");
     }
-
-
-
-
-
 }

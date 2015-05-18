@@ -37,12 +37,21 @@ public class UZ_test {
     public void Test1(){
 
         openUrl("http://booking.uz.gov.ua/en/");
-        setACField(fromField, "Kyiv");
-        setACField(toField, "Ivano-Frankivsk");
+        setFromField("Kyiv");
+        setToField ("Ivano-Frankivsk");
         setDepDate("June 2015", "20");
-        click(searchButton);
-        Assert.assertTrue(verifySearchResult("043K"));
-        Assert.assertTrue(verifySearchResult("143K"));
+        search();
+        Assert.assertTrue(verifySearchResult("043 К"));
+        Assert.assertTrue(verifySearchResult("143 К"));
+        selectTrain("043 К");
+        verifyPresent(routeWindow);
+        close (routeWindow);
+        openPlan("043 К");
+        chooseCoach("5");
+        choosePlace("29");
+
+
+
 
 
 

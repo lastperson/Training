@@ -168,7 +168,8 @@ public class UZ_PageObject {
                     placeButton = new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(By.xpath("//span[@id='places']//span[text()='" + place + "']")));
                     placeButton.click();
                 }
-                Thread.sleep(100);
+                Thread.sleep(500);
+                System.out.println("Clicking again!");
                 count++;
                 if (count > 5){
                 System.out.println("Last name field did not show up!");

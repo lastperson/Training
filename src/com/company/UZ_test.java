@@ -29,7 +29,7 @@ public class UZ_test {
 
     public void cleanUp () {
 
-        clean();
+        //clean();
     }
 
     @Test
@@ -47,7 +47,7 @@ public class UZ_test {
         verifyPresent(routeWindow);
         close (routeWindow);
         openPlan("043 К");
-        chooseCoach("5");
+        chooseCoach("6");
         choosePlace("29");
         setField(lastName, "Doe");
         setField(firstName, "John");

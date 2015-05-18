@@ -129,17 +129,26 @@ public class UZ_PageObject {
 
         getElement(xpath).findElement(By.xpath("//a[@title='close']")).click();
 
+        int count = 0;
+        while (driver.findElements(By.xpath(xpath)).size() > 0) {
+            try {
+                Thread.sleep(100);
+            }catch (InterruptedException e){
+                   }
+            count++;
+            if (count > 50){
+                System.out.println("Cannot close!");
+                break;
+            }
+        }
     }
 
-    public static void openPlan(String trainNo) {
+    public static void openPlan(String trainNo){
 
         try {
-            Thread.sleep(1500); //CHANGE THIS BULLSHIT HERE!
             WebElement selectButton = new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[text()='" + trainNo + "']/../following-sibling::td[@class='place']/div[starts-with(@title,'Coupe')]/button[text()='Choose']")));
             selectButton.click();
         }catch (TimeoutException e){
-            System.out.println("Could not click Select button!");
-        }catch (InterruptedException e){
             System.out.println("Could not click Select button!");
         }
 
@@ -153,6 +162,8 @@ public class UZ_PageObject {
             System.out.println("Plan did not open!");
         }
         getElement("//span[@class='coaches']/a[@href='#" + coach + "']").click();
+        new WebDriverWait(driver,10).until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//div[@id='loading_img']")));
+
 
     }
 

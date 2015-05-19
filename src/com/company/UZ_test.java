@@ -36,17 +36,17 @@ public class UZ_test {
 
     public void Test1(){
 
-        openUrl("http://booking.uz.gov.ua/en/");
+        openUrl("http://booking.uz.gov.ua/en/"); // Why not in @Before? Other links planned in this test suite?
         setFromField("Kyiv");
         setToField ("Ivano-Frankivsk");
         setDepDate("June 2015", "20");
         search();
         Assert.assertTrue(verifySearchResult("043 К"));
-        Assert.assertTrue(verifySearchResult("143 К"));
+        Assert.assertTrue(verifySearchResult("143 К")); // What if there is other(wrong) results on the screen?
         selectTrain("043 К");
         verifyPresent(routeWindow);
         close (routeWindow);
-        openPlan("043 К");
+        openPlan("043 К"); // What if I want to buy other ticket class, not Coupe?
         chooseCoach("5");
         choosePlace("29");
         setField(lastName, "Doe");
